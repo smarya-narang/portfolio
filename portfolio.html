@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smarya Narang — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Cabinet+Grotesk:wght@400;500;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#060608;--bg2:#0e0e12;--bg3:#16161c;
+  --accent:#7df9c8;--purple:#9b7dff;
+  --text:#eeeaf8;--muted:#6e6a80;
+  --border:rgba(255,255,255,0.07);--border2:rgba(125,249,200,0.18);
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:'Cabinet Grotesk',sans-serif;overflow-x:hidden;cursor:none;}
+
+#cur{width:8px;height:8px;background:var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:width .2s,height .2s,opacity .2s;}
+#cur-r{width:32px;height:32px;border:1px solid var(--accent);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);opacity:0.35;transition:left .08s,top .08s;}
+
+body::after{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;background:repeating-linear-gradient(0deg,transparent,transparent 3px,rgba(0,0,0,0.025) 3px,rgba(0,0,0,0.025) 4px);}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:200;padding:1.25rem 3rem;display:flex;justify-content:space-between;align-items:center;transition:all .3s;}
+nav.scrolled{background:rgba(6,6,8,0.88);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:0.15em;color:var(--accent);text-decoration:none;}
+.nav-links{display:flex;gap:2.5rem;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:500;transition:color .2s;position:relative;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;right:0;height:1px;background:var(--accent);transform:scaleX(0);transform-origin:left;transition:transform .25s;}
+.nav-links a:hover{color:var(--text);}
+.nav-links a:hover::after{transform:scaleX(1);}
+
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:0 3rem;position:relative;overflow:hidden;}
+.orb{position:absolute;pointer-events:none;border-radius:50%;filter:blur(100px);}
+.orb1{width:700px;height:700px;background:rgba(125,249,200,0.055);top:-150px;right:-200px;}
+.orb2{width:500px;height:500px;background:rgba(155,125,255,0.05);bottom:0;left:-150px;}
+.orb3{width:200px;height:200px;background:rgba(125,249,200,0.06);top:50%;left:50%;}
+
+.hero-pill{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  background:rgba(125,249,200,0.06);border:1px solid var(--border2);
+  padding:0.35rem 0.9rem;border-radius:999px;
+  font-size:0.68rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:2rem;position:relative;z-index:2;width:fit-content;
+}
+.hero-pill::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+
+.hero-name{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:clamp(5rem,14vw,13rem);
+  line-height:0.88;letter-spacing:0.02em;
+  position:relative;z-index:2;margin-bottom:3rem;
+}
+.hero-name .stroke{
+  -webkit-text-stroke:1px rgba(125,249,200,0.35);
+  color:transparent;display:block;
+  transition:color .5s,-webkit-text-stroke .5s;
+}
+.hero-name .stroke.lit{color:var(--accent);-webkit-text-stroke:none;}
+
+.hero-row{display:flex;justify-content:space-between;align-items:flex-end;position:relative;z-index:2;gap:2rem;}
+.hero-desc{color:var(--muted);font-size:0.875rem;line-height:1.9;max-width:360px;}
+.hero-desc strong{color:var(--text);}
+.hero-stats{display:flex;gap:3rem;flex-shrink:0;}
+.stat .n{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;line-height:1;background:linear-gradient(135deg,var(--accent),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.stat .l{font-size:0.63rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-top:0.2rem;}
+
+.scroll-ind{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:0.6rem;}
+.scroll-ind span{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);}
+.scroll-ind .ln{width:1px;height:48px;background:linear-gradient(to bottom,var(--accent),transparent);animation:sln 2s ease infinite;}
+@keyframes sln{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);transform-origin:top;}51%{transform-origin:bottom;}100%{transform:scaleY(0);transform-origin:bottom;}}
+
+.marquee-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--bg2);padding:0.9rem 0;overflow:hidden;position:relative;z-index:2;}
+.marquee-inner{display:flex;gap:2.5rem;white-space:nowrap;animation:mq 22s linear infinite;}
+.marquee-inner span{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.15em;color:var(--muted);}
+.marquee-inner span.a{color:var(--accent);}
+@keyframes mq{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+section{padding:7rem 3rem;position:relative;z-index:2;}
+.sec-hd{display:flex;align-items:center;gap:1.5rem;margin-bottom:4rem;}
+.sec-n{font-family:'Bebas Neue',sans-serif;font-size:0.85rem;letter-spacing:0.2em;color:var(--accent);opacity:0.55;}
+.sec-t{font-size:0.63rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.sec-ln{flex:1;height:1px;background:var(--border);}
+
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);}
+.pcard{background:var(--bg);padding:2.25rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:0.85rem;position:relative;overflow:hidden;transition:background .25s;min-height:210px;}
+.pcard::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(125,249,200,0.055),transparent 55%);opacity:0;transition:opacity .3s;}
+.pcard:hover{background:var(--bg2);}
+.pcard:hover::before{opacity:1;}
+.pcard:hover .parr{transform:translate(3px,-3px);color:var(--accent);}
+.pcard.feat{grid-column:span 2;flex-direction:row;padding:0;background:var(--bg2);}
+.pcard.feat .fl{padding:2.5rem;flex:1;}
+.pcard.feat .fr{width:260px;flex-shrink:0;border-left:1px solid var(--border);background:var(--bg3);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1rem;position:relative;overflow:hidden;}
+.feat-bg{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:6rem;color:var(--accent);opacity:0.07;letter-spacing:-0.05em;}
+.feat-chip{position:relative;font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);border:1px solid var(--border2);padding:0.4rem 0.9rem;}
+
+.pmeta{display:flex;justify-content:space-between;align-items:center;}
+.pidx{font-size:0.6rem;color:var(--muted);letter-spacing:0.1em;}
+.parr{font-size:1.1rem;color:var(--muted);transition:all .2s;}
+.pname{font-family:'Bebas Neue',sans-serif;font-size:1.65rem;letter-spacing:0.05em;line-height:1;}
+.pdesc{font-size:0.77rem;color:var(--muted);line-height:1.78;flex:1;}
+.ptags{display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:auto;}
+.tg{font-size:0.57rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.55rem;border:1px solid var(--border);color:var(--muted);border-radius:2px;}
+.tg.hi{border-color:var(--border2);color:var(--accent);}
+
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:6rem;align-items:start;}
+.about-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);line-height:1;letter-spacing:0.02em;margin-bottom:2rem;}
+.about-h em{color:var(--accent);font-style:normal;}
+.about-p{color:var(--muted);font-size:0.875rem;line-height:1.95;}
+.about-p p+p{margin-top:0.9rem;}
+.about-p strong{color:var(--text);}
+
+.skills{margin-top:1.5rem;}
+.sk{display:flex;justify-content:space-between;align-items:center;padding:0.85rem 0;border-bottom:1px solid var(--border);font-size:0.8rem;}
+.sk:first-child{border-top:1px solid var(--border);}
+.sk-r{display:flex;align-items:center;gap:1rem;}
+.sk-pct{font-size:0.63rem;color:var(--accent);font-family:'DM Mono',monospace;min-width:2.5rem;text-align:right;}
+.sk-bar{width:80px;height:2px;background:var(--border);}
+.sk-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--purple));}
+
+.contact-box{background:var(--bg2);border:1px solid var(--border);padding:4rem;position:relative;overflow:hidden;}
+.contact-box::before{content:'';position:absolute;top:-200px;right:-200px;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(125,249,200,0.045),transparent 70%);pointer-events:none;}
+.ct-top{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:3.5rem;flex-wrap:wrap;gap:2rem;}
+.ct-h{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,6vw,5rem);line-height:1;letter-spacing:0.02em;}
+.ct-h em{color:transparent;-webkit-text-stroke:1px var(--accent);font-style:normal;}
+.ct-sub{max-width:300px;color:var(--muted);font-size:0.82rem;line-height:1.85;padding-top:0.5rem;}
+
+.cc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--border);}
+.cc{background:var(--bg3);padding:1.5rem 1.25rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:0.6rem;transition:background .2s;}
+.cc:hover{background:var(--bg);}
+.cc:hover .cc-icon{color:var(--accent);}
+.cc:hover .cc-arr{transform:translate(2px,-2px);}
+.cc-icon{font-size:1.3rem;transition:color .2s;color:var(--muted);}
+.cc-lbl{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--muted);margin-top:0.25rem;}
+.cc-val{font-size:0.78rem;color:var(--text);font-weight:600;line-height:1.45;word-break:break-all;}
+.cc-arr{font-size:0.9rem;color:var(--muted);margin-top:auto;padding-top:0.5rem;transition:transform .2s;}
+
+footer{padding:1.5rem 3rem;border-top:1px solid var(--border);display:flex;justify-content:space-between;font-size:0.63rem;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;position:relative;z-index:2;}
+
+.rev{opacity:0;transform:translateY(22px);transition:opacity .7s ease,transform .7s ease;}
+.rev.vis{opacity:1;transform:none;}
+.rev.d1{transition-delay:.1s;}.rev.d2{transition-delay:.2s;}.rev.d3{transition-delay:.3s;}
+
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem;}
+  section{padding:5rem 1.5rem;}
+  .hero{padding:0 1.5rem;}
+  .hero-row{flex-direction:column;align-items:flex-start;}
+  .proj-grid{grid-template-columns:1fr;}
+  .pcard.feat{grid-column:span 1;flex-direction:column;}
+  .pcard.feat .fr{width:100%;min-height:100px;}
+  .about-grid{grid-template-columns:1fr;}
+  .cc-grid{grid-template-columns:1fr 1fr;}
+  .contact-box{padding:2rem;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">SN</a>
+  <div class="nav-links">
+    <a href="#projects">Work</a>
+    <a href="#about">About</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="orb orb3"></div>
+
+  <div class="hero-pill">Open to opportunities — Manipal University</div>
+
+  <h1 class="hero-name">
+    SMARYA<br>
+    <span class="stroke" id="hl">NARANG</span>
+  </h1>
+
+  <div class="hero-row">
+    <p class="hero-desc">
+      <strong>Developer & AI builder</strong> crafting intelligent systems, full-stack platforms,
+      and agentic pipelines. I ship end-to-end — from model to UI to production.
+    </p>
+    <div class="hero-stats">
+      <div class="stat"><div class="n">10+</div><div class="l">Projects</div></div>
+      <div class="stat"><div class="n">∞</div><div class="l">Curiosity</div></div>
+    </div>
+  </div>
+
+  <div class="scroll-ind">
+    <span>Scroll</span>
+    <div class="ln"></div>
+  </div>
+</section>
+
+<div class="marquee-wrap">
+  <div class="marquee-inner" id="mqi"></div>
+</div>
+
+<section id="projects">
+  <div class="sec-hd"><span class="sec-n">01</span><span class="sec-t">Selected Work</span><div class="sec-ln"></div></div>
+  <div class="proj-grid">
+
+    <a class="pcard feat rev" href="https://github.com/smarya-narang/DocuMind" target="_blank">
+      <div class="fl">
+        <div class="pmeta"><span class="pidx">01 — Featured</span><span class="parr">↗</span></div>
+        <div class="pname" style="font-size:2.1rem;margin:.6rem 0 .4rem;">DocuMind</div>
+        <div class="pdesc">AI-powered document intelligence. Upload any doc, query it in natural language, extract deep insights using RAG pipelines and large language models.</div>
+        <div class="ptags" style="margin-top:1.2rem;"><span class="tg hi">AI / LLM</span><span class="tg hi">RAG</span><span class="tg">Python</span><span class="tg">Vector DB</span></div>
+      </div>
+      <div class="fr">
+        <div class="feat-bg">DM</div>
+        <div class="feat-chip">Featured Project</div>
+      </div>
+    </a>
+
+    <a class="pcard rev" href="https://github.com/smarya-narang/gridmind" target="_blank">
+      <div class="pmeta"><span class="pidx">02</span><span class="parr">↗</span></div>
+      <div class="pname">GridMind</div>
+      <div class="pdesc">Intelligent grid-based problem solving with AI reasoning. An agent that plans and adapts in real time.</div>
+      <div class="ptags"><span class="tg hi">AI Agent</span><span class="tg">Reasoning</span><span class="tg">Python</span></div>
+    </a>
+
+    <a class="pcard rev d1" href="https://github.com/smarya-narang/source-ground-hitl" target="_blank">
+      <div class="pmeta"><span class="pidx">03</span><span class="parr">↗</span></div>
+      <div class="pname">Source Ground HITL</div>
+      <div class="pdesc">Human-in-the-loop pipeline for AI grounding and source verification — keeping outputs accountable and auditable.</div>
+      <div class="ptags"><span class="tg hi">HITL</span><span class="tg">Grounding</span><span class="tg">Python</span></div>
+    </a>
+
+    <a class="pcard rev" href="https://github.com/aayushichhabra/ResQNet" target="_blank">
+      <div class="pmeta"><span class="pidx">04</span><span class="parr">↗</span></div>
+      <div class="pname">ResQNet</div>
+      <div class="pdesc">Disaster response coordination network — real-time resource matching and rescue team dispatch with live map integration.</div>
+      <div class="ptags"><span class="tg hi">Crisis Tech</span><span class="tg">Real-time</span><span class="tg">Maps</span></div>
+    </a>
+
+    <a class="pcard rev d1" href="https://github.com/smarya-narang/e-learning" target="_blank">
+      <div class="pmeta"><span class="pidx">05</span><span class="parr">↗</span></div>
+      <div class="pname">E-Learning Platform</div>
+      <div class="pdesc">Full-stack learning platform with course management, student progress tracking, and interactive content delivery.</div>
+      <div class="ptags"><span class="tg hi">Full-stack</span><span class="tg">EdTech</span><span class="tg">React</span></div>
+    </a>
+
+    <a class="pcard rev" href="https://github.com/smarya-narang/trading-bot" target="_blank">
+      <div class="pmeta"><span class="pidx">06</span><span class="parr">↗</span></div>
+      <div class="pname">Trading Bot</div>
+      <div class="pdesc">Algorithmic trading bot with technical indicator analysis, backtesting engine, and automated order execution.</div>
+      <div class="ptags"><span class="tg hi">FinTech</span><span class="tg">Python</span><span class="tg">Algo</span></div>
+    </a>
+
+    <a class="pcard rev d1" href="https://github.com/smarya-narang/disaster-recovery-ai" target="_blank">
+      <div class="pmeta"><span class="pidx">07</span><span class="parr">↗</span></div>
+      <div class="pname">Disaster Recovery AI</div>
+      <div class="pdesc">AI-driven disaster response system — predictive risk analysis and automated resource allocation in emergencies.</div>
+      <div class="ptags"><span class="tg hi">AI / ML</span><span class="tg">Crisis Tech</span></div>
+    </a>
+
+    <a class="pcard rev" href="https://github.com/smarya-narang/network-packet-sniffer" target="_blank">
+      <div class="pmeta"><span class="pidx">08</span><span class="parr">↗</span></div>
+      <div class="pname">Network Packet Sniffer</div>
+      <div class="pdesc">Low-level network traffic analysis — capture, filter, and inspect packets in real time with full protocol breakdown.</div>
+      <div class="ptags"><span class="tg hi">Networking</span><span class="tg">Security</span><span class="tg">Python</span></div>
+    </a>
+
+    <a class="pcard rev d1" href="https://github.com/smarya-narang/PageForge" target="_blank">
+      <div class="pmeta"><span class="pidx">09</span><span class="parr">↗</span></div>
+      <div class="pname">PageForge</div>
+      <div class="pdesc">No-code drag-and-drop page builder with live preview, component library, and one-click export.</div>
+      <div class="ptags"><span class="tg hi">No-code</span><span class="tg">Builder</span><span class="tg">React</span></div>
+    </a>
+
+    <a class="pcard rev" href="https://github.com/smarya-narang/marketplace-students" target="_blank">
+      <div class="pmeta"><span class="pidx">10</span><span class="parr">↗</span></div>
+      <div class="pname">Student Marketplace</div>
+      <div class="pdesc">Peer-to-peer marketplace for students — buy, sell, and trade campus essentials with built-in trust mechanisms.</div>
+      <div class="ptags"><span class="tg hi">Platform</span><span class="tg">Full-stack</span><span class="tg">P2P</span></div>
+    </a>
+
+  </div>
+</section>
+
+<section id="about">
+  <div class="sec-hd"><span class="sec-n">02</span><span class="sec-t">About Me</span><div class="sec-ln"></div></div>
+  <div class="about-grid">
+    <div class="rev">
+      <h2 class="about-h">Building things<br>that <em>actually matter.</em></h2>
+      <div class="about-p">
+        <p>I'm a developer at <strong>Manipal University</strong> with a passion for AI, full-stack engineering, and systems that solve real-world problems.</p>
+        <p>From <strong>trading bots</strong> to <strong>disaster response AI</strong>, I work across domains — bringing together ML, backend infrastructure, and polished UIs to ship end-to-end.</p>
+        <p>Currently deep in <strong>agentic AI</strong>, LLM pipelines, and human-in-the-loop systems. Always building something new.</p>
+      </div>
+    </div>
+    <div class="skills rev d1">
+      <div class="sk"><span>Python / ML</span><div class="sk-r"><span class="sk-pct">92%</span><div class="sk-bar"><div class="sk-fill" style="width:92%"></div></div></div></div>
+      <div class="sk"><span>React / Full-stack</span><div class="sk-r"><span class="sk-pct">85%</span><div class="sk-bar"><div class="sk-fill" style="width:85%"></div></div></div></div>
+      <div class="sk"><span>LLMs / RAG</span><div class="sk-r"><span class="sk-pct">80%</span><div class="sk-bar"><div class="sk-fill" style="width:80%"></div></div></div></div>
+      <div class="sk"><span>Networking / Systems</span><div class="sk-r"><span class="sk-pct">70%</span><div class="sk-bar"><div class="sk-fill" style="width:70%"></div></div></div></div>
+      <div class="sk"><span>Algo Trading</span><div class="sk-r"><span class="sk-pct">65%</span><div class="sk-bar"><div class="sk-fill" style="width:65%"></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="sec-hd"><span class="sec-n">03</span><span class="sec-t">Get In Touch</span><div class="sec-ln"></div></div>
+  <div class="contact-box rev">
+    <div class="ct-top">
+      <h2 class="ct-h">Let's build<br><em>something</em><br>together.</h2>
+      <p class="ct-sub">Open to internships, collaborations, and interesting projects. If you have an idea, let's talk.</p>
+    </div>
+    <div class="cc-grid">
+      <a class="cc" href="https://github.com/smarya-narang" target="_blank">
+        <div class="cc-icon">⌥</div>
+        <div class="cc-lbl">GitHub</div>
+        <div class="cc-val">smarya-narang</div>
+        <div class="cc-arr">↗</div>
+      </a>
+      <a class="cc" href="mailto:smarya.narang01@gmail.com">
+        <div class="cc-icon">✉</div>
+        <div class="cc-lbl">Email</div>
+        <div class="cc-val">smarya.narang01@gmail.com</div>
+        <div class="cc-arr">↗</div>
+      </a>
+      <a class="cc" href="tel:+918920870894">
+        <div class="cc-icon">◎</div>
+        <div class="cc-lbl">Phone</div>
+        <div class="cc-val">+91 89208 70894</div>
+        <div class="cc-arr">↗</div>
+      </a>
+      <a class="cc" href="https://www.linkedin.com/in/smarya-narang-77b6182b2/" target="_blank">
+        <div class="cc-icon">◈</div>
+        <div class="cc-lbl">LinkedIn</div>
+        <div class="cc-val">smarya-narang</div>
+        <div class="cc-arr">↗</div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Smarya Narang</span>
+  <span>Made with intent ◉</span>
+</footer>
+
+<script>
+const cur = document.getElementById('cur');
+const curR = document.getElementById('cur-r');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+  setTimeout(() => { curR.style.left = e.clientX + 'px'; curR.style.top = e.clientY + 'px'; }, 80);
+});
+
+document.querySelectorAll('.pcard').forEach(c => {
+  c.addEventListener('mousemove', e => {
+    const r = c.getBoundingClientRect();
+    c.style.setProperty('--mx', ((e.clientX - r.left) / r.width * 100).toFixed(1) + '%');
+    c.style.setProperty('--my', ((e.clientY - r.top) / r.height * 100).toFixed(1) + '%');
+  });
+});
+
+window.addEventListener('scroll', () => document.getElementById('nav').classList.toggle('scrolled', scrollY > 50));
+
+const obs = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add('vis'); }), { threshold: 0.07 });
+document.querySelectorAll('.rev').forEach(el => obs.observe(el));
+
+const hl = document.getElementById('hl');
+setInterval(() => hl.classList.toggle('lit'), 2400);
+
+const items = ['Python','AI Agents','React','LLMs','RAG','Full-stack','FinTech','Networking','No-code','EdTech','Hackathons','Open Source','ML','Node.js'];
+const mqi = document.getElementById('mqi');
+let h = '';
+for(let i = 0; i < 3; i++) items.forEach((t,j) => { h += `<span${j%3===0?' class="a"':''}>${t}</span><span>·</span>`; });
+mqi.innerHTML = h;
+</script>
+</body>
+</html>
